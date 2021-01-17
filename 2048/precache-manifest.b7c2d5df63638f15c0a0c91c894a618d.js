@@ -1,27 +1,27 @@
 self.__precacheManifest = [
   {
-    "revision": "b7b26318218229576cb7",
+    "revision": "e8c04d503e6d5fe292e1",
     "url": "/games/2048/css/app.b66be264.css"
   },
   {
-    "revision": "b7b26318218229576cb7",
-    "url": "/games/2048/js/app.af60c60f.js"
+    "revision": "e8c04d503e6d5fe292e1",
+    "url": "/games/2048/js/app.584350de.js"
   },
   {
     "revision": "b4a6d8f19c5e734f0efb",
     "url": "/games/2048/js/chunk-vendors.ee2879f8.js"
   },
   {
-    "revision": "93f6c513648ebc377a80dab3ac2c2f8b",
+    "revision": "758e81965c7d0b6ddf3618b5fcaa0c9b",
     "url": "/games/2048/index.html"
-  },
-  {
-    "revision": "87b801856ca51590d8bfbc1bdca29d54",
-    "url": "/games/2048/game-img/2048/number.json"
   },
   {
     "revision": "596a8d3e6a63bfccadec9d95f18be61b",
     "url": "/games/2048/game-img/2048/number.png"
+  },
+  {
+    "revision": "87b801856ca51590d8bfbc1bdca29d54",
+    "url": "/games/2048/game-img/2048/number.json"
   },
   {
     "revision": "b6216d61c03e6ce0c9aea6ca7808f7ca",

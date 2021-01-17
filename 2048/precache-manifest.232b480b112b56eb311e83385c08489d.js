@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "game-img/2048/number.png"
   },
   {
-    "revision": "aa566739688ecb60169982a298df4a0b",
+    "revision": "87b801856ca51590d8bfbc1bdca29d54",
     "url": "game-img/2048/number.json"
   },
   {

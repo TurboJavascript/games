@@ -73,9 +73,8 @@ function initView () {
 
   pixi.rectContainer = new PIXI.Container();
   pixi.spriteContainer = new PIXI.Container();
-  // https://turbojavascript.github.io/games/2048
   app.loader
-    .add([{name: 'numberJson', url:  '/game-img/2048/number.json'}])
+    .add([{name: 'numberJson', url:  './game-img/2048/number.json'}])
     .on('progress', loadProgressHandler)
     .load(() => {
       createIdTexture();

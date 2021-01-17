@@ -12,16 +12,16 @@ self.__precacheManifest = [
     "url": "js/chunk-vendors.a92402a9.js"
   },
   {
-    "revision": "2d9b03abeff66b20cb453865dc62b5b0",
+    "revision": "fd0f1f55580f17477684afb780fb0929",
     "url": "index.html"
-  },
-  {
-    "revision": "87b801856ca51590d8bfbc1bdca29d54",
-    "url": "game-img/2048/number.json"
   },
   {
     "revision": "596a8d3e6a63bfccadec9d95f18be61b",
     "url": "game-img/2048/number.png"
+  },
+  {
+    "revision": "87b801856ca51590d8bfbc1bdca29d54",
+    "url": "game-img/2048/number.json"
   },
   {
     "revision": "b6216d61c03e6ce0c9aea6ca7808f7ca",

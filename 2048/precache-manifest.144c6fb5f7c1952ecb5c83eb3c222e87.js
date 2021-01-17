@@ -1,18 +1,18 @@
 self.__precacheManifest = [
   {
-    "revision": "e01e3cb21822ee4a1ce1",
+    "revision": "ac066f72a4b27e2a1852",
     "url": "/games/2048/css/app.b66be264.css"
   },
   {
-    "revision": "e01e3cb21822ee4a1ce1",
-    "url": "/games/2048/js/app.1e390439.js"
+    "revision": "ac066f72a4b27e2a1852",
+    "url": "/games/2048/js/app.237cd0e2.js"
   },
   {
     "revision": "b4a6d8f19c5e734f0efb",
     "url": "/games/2048/js/chunk-vendors.ee2879f8.js"
   },
   {
-    "revision": "b8b4a67b0cf44528db6bf3f2cb3491ba",
+    "revision": "88d7af8f0f9658d8e0b0b0685a3a99e6",
     "url": "/games/2048/index.html"
   },
   {

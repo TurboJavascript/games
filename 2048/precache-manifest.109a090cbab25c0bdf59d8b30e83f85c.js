@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "games/2048/index.html"
   },
   {
-    "revision": "b04c2d9872be7b5fe4aa6f0bfcf5fc49",
+    "revision": "aa566739688ecb60169982a298df4a0b",
     "url": "games/2048/game-img/2048/number.json"
   },
   {

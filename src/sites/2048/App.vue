@@ -3,8 +3,8 @@
     <div class="content">
       <div class="name">2048</div>
       <div class="menu">
-        <input class="dimension" type="number" v-model="data.dimension" />
-        <div class="btn" @click="restart">new game</div>
+<!--        <input class="dimension" type="number" v-model="data.dimension" />-->
+        <div class="btn" @click="restart">restart</div>
       </div>
     </div>
     <div id="box" class="box" ref="box">
@@ -56,6 +56,7 @@ export default {
     margin-right: auto;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     .name {
       color: #776e65;
       font-weight: 900;
@@ -74,7 +75,6 @@ export default {
         background-color: #413e35;
         display: inline-block;
         color: #fff;
-        margin-left: 30px;
         border-radius: 5px;
         padding: px2rem(10);
       }

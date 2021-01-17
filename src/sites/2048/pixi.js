@@ -75,7 +75,7 @@ function initView () {
   pixi.spriteContainer = new PIXI.Container();
 
   app.loader
-    .add([{name: 'numberJson', url: '/game-img/2048/number.json'}])
+    .add([{name: 'numberJson', url:  process.env.NODE_ENV === 'production' ? '/games/2048':'' +'/game-img/2048/number.json'}])
     .on('progress', loadProgressHandler)
     .load(() => {
       createIdTexture();

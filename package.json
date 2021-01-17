@@ -8,7 +8,8 @@
     "serve": "tools/vcs.js serve",
     "build": "tools/vcs.js build",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit -r should -r should-sinon"
+    "test:unit": "vue-cli-service test:unit -r should -r should-sinon",
+    "gh-pages": "node tools/gh-pages.js"
   },
   "dependencies": {
     "amfe-flexible": "^2.2.1",
@@ -37,9 +38,10 @@
     "eslint-config-prettier": "^3.1.0",
     "eslint-plugin-prettier": "^3.0.0",
     "eslint-plugin-vue": "^5.2.3",
+    "gh-pages": "^3.1.0",
     "inquirer": "^6.2.1",
     "lint-staged": "^8.0.4",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.14.1",
     "sass-loader": "^7.1.0",
     "should": "^13.2.3",
     "should-sinon": "0.0.6",
@@ -52,5 +54,11 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "lint-staged": {
+    "*.{js,jsx,vue,ts,tsx}": [
+      "vue-cli-service lint",
+      "git add ."
+    ]
   }
 }

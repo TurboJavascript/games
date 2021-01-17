@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "commit": "lint-staged && git-cz -n",
+    "commit": "git add . && lint-staged && git-cz -n",
     "release": "standard-version",
     "serve": "tools/vcs.js serve",
     "build": "tools/vcs.js build",
@@ -56,9 +56,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,vue,ts,tsx}": [
-      "vue-cli-service lint",
-      "git add ."
+    "*.{js,jsx,vue,ts,tsx,}": [
     ]
   }
 }

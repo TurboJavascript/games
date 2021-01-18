@@ -1,46 +1,54 @@
 import * as PIXI from 'pixi.js'
 import _ from 'lodash';
 import {TouchDirection} from './touch';
-import store, {initStore} from './pixi-store';
 import {keyboard, randomInt, strip, transform, chunk, setAnimation} from './pixi-util';
 let dpr = window.devicePixelRatio;
-let {dimension, margin, speed} = store;
 let viewWidth = 0;
 let app = new PIXI.Application({
   width: viewWidth,
   height: viewWidth
 });
-const pixi = {
-  correction: 0, // fix the anchor side effect
-  isInitRandomSprite: false,
-  isMoving: false,
-  spriteWidth: strip(viewWidth / dimension - 2 * margin),
-  probability: 90,
-  sprites: [],
-  mergeSprites: [],
-  textures: [],
-  chessBgStage: [], // for stage bg view
-  moveDirection: 0,
-  moveSteps: [],
-  rectContainer: null, //for rect container
-  spriteContainer: null, //for sprite container
-  left: keyboard(37),
-  up: keyboard(38),
-  right: keyboard(39),
-  down: keyboard(40),
-  moveSprite,
-  initView,
-  drawRectSprite
-};
+let pixi = {};
 
 export default {
   initView
 };
 
-function initData () {
-  initStore();
+function initData (store) {
+  const  {
+    dimension,
+    margin,
+    speed,
+    currentScore,
+    highestScore,
+    isGameOver,
+  } = store
+
+  pixi = {
+    correction: 0, // fix the anchor side effect
+    isInitRandomSprite: false,
+    isMoving: false,
+    spriteWidth: strip(viewWidth / dimension - 2 * margin),
+    probability: 90,
+    sprites: [],
+    mergeSprites: [],
+    textures: [],
+    chessBgStage: [], // for stage bg view
+    moveDirection: 0,
+    moveSteps: [],
+    rectContainer: null, //for rect container
+    spriteContainer: null, //for sprite container
+    left: keyboard(37),
+    up: keyboard(38),
+    right: keyboard(39),
+    down: keyboard(40),
+    moveSprite,
+    initView,
+    drawRectSprite,
+    ...store
+  }
   viewWidth = store.width * 0.9 * dpr;
-  margin = margin * dpr;
+  store.margin = margin * dpr;
   let n = dimension;
   pixi.spriteWidth = strip(viewWidth / n - 2 * margin);
   pixi.correction = pixi.spriteWidth / 2;
@@ -55,8 +63,8 @@ function initData () {
 
   pixi.chessBgStage = _.fill(Array(n * n), 0, 0, n * n);
 }
-function initView () {
-  initData();
+function initView (store) {
+  initData(store);
 
   app = new PIXI.Application({
     width: viewWidth,
@@ -69,7 +77,7 @@ function initView () {
   app.renderer.view.style.verticalAlign = 'top';
   app.renderer.view.style.transform = `scale(${1/dpr})`;
   app.renderer.view.style.transformOrigin = `0 0`;
-  app.renderer.view.style.border = `${margin}px solid #bbada0`;
+  app.renderer.view.style.border = `${pixi.margin}px solid #bbada0`;
 
   pixi.rectContainer = new PIXI.Container();
   pixi.spriteContainer = new PIXI.Container();
@@ -98,7 +106,7 @@ function createIdTexture () {
 
 function drawRectView (chess) {
   chess.forEach((e, index) => {
-    drawRect(transform(index, dimension));
+    drawRect(transform(index, pixi.dimension));
   });
   app.stage.addChild(pixi.rectContainer);
   app.stage.addChild(pixi.spriteContainer);
@@ -107,8 +115,8 @@ function drawRectView (chess) {
 
 function drawRect ({x, y}) {
   const rectangle = new PIXI.Graphics();
-  const spriteX = strip(margin + (pixi.spriteWidth + 2 * margin) * x);
-  const spriteY = strip(margin + (pixi.spriteWidth + 2 * margin) * y);
+  const spriteX = strip(pixi.margin + (pixi.spriteWidth + 2 * pixi.margin) * x);
+  const spriteY = strip(pixi.margin + (pixi.spriteWidth + 2 * pixi.margin) * y);
   rectangle.beginFill(0xCCC0B3);
   rectangle.drawRoundedRect(spriteX, spriteY, pixi.spriteWidth, pixi.spriteWidth, 20);
   rectangle.endFill();
@@ -116,8 +124,8 @@ function drawRect ({x, y}) {
 }
 
 function drawRectSprite ({x, y, value}) {
-  const spriteX = strip(margin + (pixi.spriteWidth + 2 * margin) * x + pixi.correction);
-  const spriteY = strip(margin + (pixi.spriteWidth + 2 * margin) * y + pixi.correction);
+  const spriteX = strip(pixi.margin + (pixi.spriteWidth + 2 * pixi.margin) * x + pixi.correction);
+  const spriteY = strip(pixi.margin + (pixi.spriteWidth + 2 * pixi.margin) * y + pixi.correction);
   setupSprite({
     x: spriteX,
     y: spriteY,
@@ -179,19 +187,19 @@ function play () {
       // one step is over
       initRandomSprite();
       if (isGameOver()) {
-        store.isGameOver = true;
+        pixi.isGameOver = true;
       }
     }
     return;
   }
-  const right = strip(viewWidth - pixi.spriteWidth - margin + pixi.correction);
+  const right = strip(viewWidth - pixi.spriteWidth - pixi.margin + pixi.correction);
   const operator = pixi.moveDirection === 2 || pixi.moveDirection === 8 ? 1 : -1;
   sortByXY(pixi.moveDirection).forEach(e => {
     for (let i = 0; i < e.length; i++) {
       let sprite = e[i];
 
-      if (pixi.moveDirection === 2 && sprite.x <= margin+ pixi.correction) {
-        sprite.x = margin + pixi.correction;
+      if (pixi.moveDirection === 2 && sprite.x <= pixi.margin+ pixi.correction) {
+        sprite.x = pixi.margin + pixi.correction;
         sprite.vx = 0;
         continue;
       }
@@ -205,8 +213,8 @@ function play () {
         sprite.vy = 0;
         continue;
       }
-      if (pixi.moveDirection === 8 && sprite.y <= margin+ pixi.correction) {
-        sprite.y = margin+ pixi.correction;
+      if (pixi.moveDirection === 8 && sprite.y <= pixi.margin+ pixi.correction) {
+        sprite.y = pixi.margin+ pixi.correction;
         sprite.vy = 0;
         continue;
       }
@@ -215,18 +223,18 @@ function play () {
         let c = false;
         if (pixi.moveDirection === 2) {
           c =
-          sprite.x + sprite.vx <= hitSprite.x + (pixi.spriteWidth + margin) * operator;
+          sprite.x + sprite.vx <= hitSprite.x + (pixi.spriteWidth + pixi.margin) * operator;
         }
         else if (pixi.moveDirection === 8) {
           c =
-          sprite.y + sprite.vy <= hitSprite.y + (pixi.spriteWidth + margin) * operator;
+          sprite.y + sprite.vy <= hitSprite.y + (pixi.spriteWidth + pixi.margin) * operator;
         }
         else if (pixi.moveDirection === 4) {
           c =
-          sprite.x + sprite.vx >= hitSprite.x + (pixi.spriteWidth + margin) * operator;
+          sprite.x + sprite.vx >= hitSprite.x + (pixi.spriteWidth + pixi.margin) * operator;
         } else {
           c =
-          sprite.y + sprite.vy >= hitSprite.y + (pixi.spriteWidth + margin) * operator;
+          sprite.y + sprite.vy >= hitSprite.y + (pixi.spriteWidth + pixi.margin) * operator;
         }
         if (
           !hitSprite.vx && !hitSprite.vy &&
@@ -234,26 +242,26 @@ function play () {
           (sprite.value !== hitSprite.value || hitSprite.isNew || sprite.isNew)
         ){
           if (pixi.moveDirection === 2) {
-            sprite.x = strip(hitSprite.x + pixi.spriteWidth + margin * 2);
+            sprite.x = strip(hitSprite.x + pixi.spriteWidth + pixi.margin * 2);
             sprite.vx = 0;
           }
           if (pixi.moveDirection === 4) {
-            sprite.x = strip(hitSprite.x - pixi.spriteWidth - margin * 2);
+            sprite.x = strip(hitSprite.x - pixi.spriteWidth - pixi.margin * 2);
             sprite.vx = 0;
           }
           if (pixi.moveDirection === 8) {
-            sprite.y = strip(hitSprite.y + pixi.spriteWidth + margin * 2);
+            sprite.y = strip(hitSprite.y + pixi.spriteWidth + pixi.margin * 2);
             sprite.vy = 0;
           }
           if (pixi.moveDirection === 16) {
-            sprite.y = strip(hitSprite.y - pixi.spriteWidth - margin * 2);
+            sprite.y = strip(hitSprite.y - pixi.spriteWidth - pixi.margin * 2);
             sprite.vy = 0;
           }
           continue;
         }
         let cc =
-          ((pixi.moveDirection === 2 || pixi.moveDirection === 4) && Math.abs(hitSprite.x - sprite.x) <= speed) ||
-          ((pixi.moveDirection === 8 || pixi.moveDirection === 16) && Math.abs(hitSprite.y - sprite.y) <= speed);
+          ((pixi.moveDirection === 2 || pixi.moveDirection === 4) && Math.abs(hitSprite.x - sprite.x) <= pixi.speed) ||
+          ((pixi.moveDirection === 8 || pixi.moveDirection === 16) && Math.abs(hitSprite.y - sprite.y) <= pixi.speed);
         if (
           hitSprite.value === sprite.value &&
           cc &&
@@ -286,36 +294,36 @@ function initRandomSprite () {
   pixi.isInitRandomSprite = true;
   console.log(`数组长度：${pixi.sprites.length}`)
 
-  let index = randomInt(0, dimension * dimension - 1);
+  let index = randomInt(0, pixi.dimension * pixi.dimension - 1);
   pixi.randomSpriteIndex = index;
   console.log(`初始随机位置：${index}`)
 
   index = getOnlyRandomIndex(index);
   console.log(`去重后随机位置：${index}`)
   let randomNum = randomInt(0, 100) > pixi.probability ? 4 : 2;
-  drawRectSprite({...transform(index, dimension), value: randomNum});
+  drawRectSprite({...transform(index, pixi.dimension), value: randomNum});
 }
 
 function getOnlyRandomIndex(index) {
   if (checkIsRepeat(index)) {
-    index = ++index % (dimension * dimension);
+    index = ++index % (pixi.dimension * pixi.dimension);
     return getOnlyRandomIndex(index);
   }
   return index;
 }
 
 function checkIsRepeat(index) {
-  const {x, y} = transform(index, dimension);
+  const {x, y} = transform(index, pixi.dimension);
   console.log(`随机位置对应的x：${x}, y: ${y}`)
   // judge is repeat
-  const spriteX = strip(margin + (pixi.spriteWidth + 2 * margin) * x + pixi.correction);
-  const spriteY = strip(margin + (pixi.spriteWidth + 2 * margin) * y + pixi.correction);
+  const spriteX = strip(pixi.margin + (pixi.spriteWidth + 2 * pixi.margin) * x + pixi.correction);
+  const spriteY = strip(pixi.margin + (pixi.spriteWidth + 2 * pixi.margin) * y + pixi.correction);
   return pixi.sprites.find(sprite => Math.abs(sprite.x - spriteX) < 1 && Math.abs(sprite.y - spriteY) < 1);
 
 }
 
 function isGameOver () {
-  if (pixi.sprites.length === dimension * dimension) {
+  if (pixi.sprites.length === pixi.dimension * pixi.dimension) {
     // chess is full
     let sortedSprites = _.sortBy(pixi.sprites, ['y', 'x']);
 
@@ -353,16 +361,16 @@ function moveSprite (direction) {
     sprite.y1 = sprite.y;
 
     if (direction === 2) {
-      sprite.vx = -speed;
+      sprite.vx = -pixi.speed;
     }
     if (direction === 4) {
-      sprite.vx = speed;
+      sprite.vx = pixi.speed;
     }
     if (direction === 8) {
-      sprite.vy = -speed;
+      sprite.vy = -pixi.speed;
     }
     if (direction === 16) {
-      sprite.vy = speed;
+      sprite.vy = pixi.speed;
     }
   });
 }

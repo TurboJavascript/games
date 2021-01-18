@@ -2,11 +2,12 @@
   <div id="app">
     <div class="content">
       <div class="name">2048</div>
+      <input class="dimension" type="number" v-model="data.dimension"/>
       <div class="menu">
-<!--        <input class="dimension" type="number" v-model="data.dimension" />-->
         <div class="btn" @click="restart">restart</div>
       </div>
     </div>
+
     <div id="box" class="box" ref="box">
       <div id="pixi"></div>
     </div>
@@ -15,27 +16,31 @@
 </template>
 
 <script>
-import {TouchDirection} from './touch';
 import pixi from './pixi';
-import data from './pixi-store';
 import GameOver from './components/gameover.vue';
+import {mapFields} from 'vuex-map-fields-two';
 
 export default {
   name: 'Games-2048',
   components: {GameOver},
   data() {
     return {
-      data
     }
   },
+
+  computed: {
+    ...mapFields([
+      'data'
+    ])
+  },
   mounted() {
-    data.width = document.getElementById('box').clientWidth;
-    pixi.initView();
+    this.data.width = document.getElementById('box').clientWidth;
+    pixi.initView(this.data);
   },
   methods: {
     restart() {
-      data.width = document.getElementById('box').clientWidth;
-      pixi.initView();
+      this.data.width = document.getElementById('box').clientWidth;
+      pixi.initView(this.data);
     }
   }
 };
@@ -61,15 +66,15 @@ export default {
       color: #776e65;
       font-weight: 900;
     }
+    .dimension {
+      width: px2rem(160);
+      font-size: px2rem(30);
+      background-color: #bbada0;
+      padding: px2rem(12);
+      outline: none;
+      border: none;
+    }
     .menu {
-      .dimension {
-        width: px2rem(160);
-        font-size: px2rem(30);
-        background-color: #bbada0;
-        padding: px2rem(12);
-        outline: none;
-        border: none;
-      }
       .btn {
         font-size: px2rem(30);
         background-color: #413e35;

@@ -1,22 +1,24 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import {getField, updateField} from 'vuex-map-fields-two';
+import {cloneDeep} from 'lodash';
 
 // Import the `getField` getter and the `updateField`
 // mutation function from the `vuex-map-fields` module.
 
 Vue.use(Vuex);
-
+export const BASE_DATA = {
+  dimension: 4,
+  margin: 6,
+  speed: 10,
+  currentScore: 0,
+  highestScore: 0,
+  isGameOver: false,
+  stepsLength: 0,
+}
 export default new Vuex.Store({
   state: {
-    data: {
-      dimension: 4,
-      margin: 6,
-      speed: 10,
-      currentScore: 0,
-      highestScore: 0,
-      isGameOver: false,
-    }
+    data: cloneDeep(BASE_DATA)
   },
   getters: {
     // Add the `getField` getter to the

@@ -2,10 +2,9 @@
   <div id="app">
     <div class="content">
       <div class="name">2048</div>
-      <input class="dimension" type="number" v-model="data.dimension"/>
-      <div class="menu">
-        <div class="btn" @click="restart">restart</div>
-      </div>
+      <input class="dimension" type="number" v-model="data.dimension" @keypress.enter="restart"/>
+      <div class="name">{{data.stepsLength}}</div>
+      <div class="btn" @click="restart">restart</div>
     </div>
 
     <div id="box" class="box" ref="box">
@@ -19,6 +18,8 @@
 import pixi from './pixi';
 import GameOver from './components/gameover.vue';
 import {mapFields} from 'vuex-map-fields-two';
+import {BASE_DATA} from '@/sites/2048/pixi-store';
+import {cloneDeep, mergeWith} from 'lodash';
 
 export default {
   name: 'Games-2048',
@@ -39,6 +40,7 @@ export default {
   },
   methods: {
     restart() {
+      this.data = mergeWith(cloneDeep(BASE_DATA), {dimension: this.data.dimension})
       this.data.width = document.getElementById('box').clientWidth;
       pixi.initView(this.data);
     }
@@ -67,33 +69,31 @@ export default {
       font-weight: 900;
     }
     .dimension {
-      width: px2rem(160);
+      width: px2rem(80);
       font-size: px2rem(30);
       background-color: #bbada0;
       padding: px2rem(12);
       outline: none;
       border: none;
     }
-    .menu {
-      .btn {
-        font-size: px2rem(30);
-        background-color: #413e35;
-        display: inline-block;
-        color: #fff;
-        border-radius: 5px;
-        padding: px2rem(10);
-      }
+    .btn {
+      font-size: px2rem(30);
+      background-color: #413e35;
+      display: inline-block;
+      color: #fff;
+      border-radius: 5px;
+      padding: px2rem(20);
     }
   }
   .box {
-    width: 90%;
-    margin: px2rem(50) auto;
+    width: 100%;
+    margin: 0 auto;
     border-radius: px2rem(40);
     text-align: center;
   }
 $moboleWidth: px2rem(640);
 $pcMiddleWidth: px2rem(640);
-$pcBigWidth: px2rem(350);
+$pcBigWidth: px2rem(450);
 
   @media screen and (min-width:640px){
     .content{
@@ -112,16 +112,14 @@ $pcBigWidth: px2rem(350);
       .name {
         font-size: px2rem(50);
       }
-      .menu {
-        .dimension {
-          width: px2rem(70);
-          line-height: 1;
-          font-size: px2rem(16);
-        }
-        .btn {
-          font-size: px2rem(16);
-          padding: px2rem(10);
-        }
+      .dimension {
+        width: px2rem(70);
+        line-height: 1;
+        font-size: px2rem(16);
+      }
+      .btn {
+        font-size: px2rem(16);
+        padding: px2rem(10);
       }
     }
     .box {

@@ -15,6 +15,7 @@ export default {
 };
 
 function initData (store) {
+  app.resize();
   const  {
     dimension,
     margin,
@@ -32,10 +33,10 @@ function initData (store) {
     probability: 90,
     sprites: [],
     mergeSprites: [],
+    moveSteps: [],
     textures: [],
     chessBgStage: [], // for stage bg view
     moveDirection: 0,
-    moveSteps: [],
     rectContainer: null, //for rect container
     spriteContainer: null, //for sprite container
     left: keyboard(37),
@@ -76,6 +77,8 @@ function initView (store) {
   app.renderer.backgroundColor = 0xBBADA0;
   app.renderer.view.style.verticalAlign = 'top';
   app.renderer.view.style.transform = `scale(${1/dpr})`;
+  app.renderer.view.style.position = `absolute`;
+  app.renderer.view.style.left = `4%`;
   app.renderer.view.style.transformOrigin = `0 0`;
   app.renderer.view.style.border = `${pixi.margin}px solid #bbada0`;
 
@@ -86,14 +89,14 @@ function initView (store) {
     .on('progress', loadProgressHandler)
     .load(() => {
       createIdTexture();
-      gameStart();
+      gameStart(store);
       app.ticker.add(play);
     });
 }
 
-function gameStart() {
+function gameStart(store) {
   drawRectView(pixi.chessBgStage);
-  moveHandler();
+  moveHandler(store);
 
   initRandomSprite();
   pixi.isInitRandomSprite = false;
@@ -346,7 +349,7 @@ function findCanBeMerged (sortedSprites, d) {
   });
 }
 
-function moveSprite (direction) {
+function moveSprite (direction, store) {
   if (pixi.isMoving) return;
   pixi.isMoving = true;
   pixi.isInitRandomSprite = false;
@@ -373,6 +376,7 @@ function moveSprite (direction) {
       sprite.vy = pixi.speed;
     }
   });
+  store.stepsLength ++;
 }
 
 function hitMerge(s1, s2) {
@@ -391,23 +395,23 @@ function hitMerge(s1, s2) {
   // console.log(`removeChild-s2: aid: ${aid2 && aid2.aid}`);
 }
 
-function moveHandler () {
+function moveHandler (store) {
   TouchDirection(document.getElementById('pixi'))
     .on('swipe', (e) => {
-      moveSprite(e.offsetDirection);
+      moveSprite(e.offsetDirection, store);
     });
 
   pixi.left.release = () => {
-    moveSprite(2);
+    moveSprite(2, store);
   };
   pixi.right.release = () => {
-    moveSprite(4);
+    moveSprite(4, store);
   };
   pixi.down.release = () => {
-    moveSprite(16);
+    moveSprite(16, store);
   };
   pixi.up.release = () => {
-    moveSprite(8);
+    moveSprite(8, store);
   };
 }
 

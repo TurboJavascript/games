@@ -26,4 +26,31 @@ module.exports = {
       chunkFilename: `[name].${version}.${timestamp}.js`
     },
   },
+  chainWebpack: (config) => {
+    config.plugin("html").tap(([options]) => [
+      Object.assign(options, {
+        minify: {
+          removeComments: true,
+          removeCommentsFromCDATA: true,
+          collapseWhitespace: true,
+          conservativeCollapse: false,
+          collapseInlineTagWhitespace: true,
+          collapseBooleanAttributes: true,
+          removeRedundantAttributes: true,
+          removeAttributeQuotes: false,
+          removeEmptyAttributes: true,
+          removeScriptTypeAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          useShortDoctype: true,
+          minifyJS: true,
+          minifyCSS: true
+        },
+        cache: true, // 仅在文件被更改时发出文件
+        hash: true, // true则将唯一的webpack编译哈希值附加到所有包含的脚本和CSS文件中,这对于清除缓存很有用
+        scriptLoading: "defer", // 现代浏览器支持非阻塞javascript加载（'defer'）,以提高页面启动性能。
+        inject: true, // true所有javascript资源都将放置在body元素的底部
+        chunksSortMode: "none"
+      })
+    ]);
+  }
 };
